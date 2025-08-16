@@ -64,6 +64,11 @@ python main.py
 Now open [http://127.0.0.1:5000](http://127.0.0.1:5000) 🎉  
 
 ---
+### 6. Create and Add Google API
+- Add Google Api's in
+- 1. creators.html
+  2. allvideos.html
+  3. video.html
 
 ## 📂 Project Structure  
 
