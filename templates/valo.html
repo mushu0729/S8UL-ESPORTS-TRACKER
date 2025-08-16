@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% block title %}Valorant{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #0d0c1d; /* Dark blue background */
+        color: #ffffff;
+        margin: 0;
+        padding: 0;
+        overflow-y: scroll;
+    }
+
+    .team-roster {
+        text-align: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .team-roster h1 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        text-align: left;
+        font-weight: 700;
+        margin-left: 40px;
+    }
+
+    .team-cards {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .card {
+        background: rgba(28, 28, 28, 0.336); /* Semi-transparent dark background */
+        border: 1px solid #333;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        width: 250px;
+        text-align: center;
+        padding: 20px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(247, 0, 255, 0.507);
+    }
+
+    .card img {
+        width: 100%;
+        height: 250px;
+        overflow-y: hidden;
+        border-radius: 10px;
+        margin-bottom: 15px;
+    }
+
+    .card h2 {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+        text-align: left;
+        color: white;
+    }
+
+    .card p {
+        font-size: 1rem;
+        color: #8482da;
+        margin-bottom: 15px;
+        text-align: left;
+    }
+
+    .social-icons a {
+        margin: 0 10px;
+        display: inline-block;
+    }
+
+    .social-icons img {
+        width: 24px;
+        height: 24px;
+        transition: transform 0.2s;
+        border-radius: 0px;
+    }
+
+    .social-icons img:hover {
+        transform: scale(1.2);
+    }
+
+    .valo-card {
+        background: url(/static/valobg.avif) no-repeat center center; /* Image as background */
+        background-size: cover; /* Ensures the image fills the card */
+        border-radius: 10px; /* Optional rounded corners */
+        overflow: hidden; /* Prevents content from overflowing */
+        margin-bottom: 20px; /* Adds spacing below the card */
+        max-width: 1080px; /* Sets card width */
+        min-height: 300px; /* Adjust height as needed */
+        display: flex; /* Enables content positioning */
+        align-items: center; /* Centers text vertically */
+        justify-content: center; /* Centers text horizontally */
+        text-align: center; /* Centers text inside the card */
+        position: relative; /* Enables layering for text */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Adds a subtle shadow */
+        margin-left: 230px;
+    }
+
+    .valo-card .content {
+        color: white; /* Text color for readability */
+        background: transparent;
+        padding: 20px; /* Adds space around text */
+        border-radius: 5px; /* Optional rounded corners for the text block */
+        text-align: left;
+        margin-top: 180px;
+        margin-right: 180px;
+    }
+
+    .valo-card h2 {
+        font-size: 2rem; /* Larger heading size */
+        margin-bottom: 10px; /* Adds spacing below heading */
+        font-weight: 700;
+    }
+
+    .valo-card p {
+        font-size: 15px; /* Slightly larger paragraph text */
+        line-height: 1.5; /* Improves readability */
+        background: linear-gradient(to right, rgb(224, 248, 2), rgb(71, 97, 0), rgb(200, 236, 0), rgb(71, 71, 17),rgb(173, 173, 154), rgb(255, 255, 255));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-transform: uppercase;
+        font-weight: 800;
+        padding-left: 10px;
+        border-color: #000000;
+        border: 40px;
+    }
+
+    button {
+        color: black;
+        size: 100px;
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px  rgba(247, 0, 255, 0.507);
+    }
+
+    .btn {
+        margin-bottom: 5px;
+    }
+</style>
+
+<div class="valo-card">
+    <div class="content">
+        <h2>Valorant</h2>
+        <p>India's most dominant Valorant roster, known for their aggressive playstyle and strategic excellence.</p>
+    </div>
+</div>
+
+<div class="team-roster">
+    <h1><img style="height: 60px; width: 60px;" src="static/roster.png"> Team Roster</h1>
+
+    <div class="team-cards">
+    {% for member in valorant_team %}
+        <div class="card">
+            <img src="{{ url_for('static', filename=member.image_url.split('/')[-1]) }}" alt="{{ member.name }}">
+            <h2>{{ member.name }}</h2>
+            <p>{{ member.role }}</p>
+
+            <div class="social-icons">
+                <a href="{{ member.youtube_url }}"><img style="width: 50px; height: 50px;" src="static/youtube.png" alt="YouTube"></a>
+                <a href="{{ member.instagram_url }}"><img src="static/download-removebg-preview.png" alt="Instagram"></a>
+                <a href="{{ member.twitter_url }}"><img style="width: 40px; height: 40px;" src="static/twitter.png" alt="Twitter"></a>
+            </div>
+
+            <!-- Show Edit and Delete buttons only if user is logged in -->
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('add_valo_member') }}" style="color: white; background-color: #0d0c1d98; border: transparent;" class="btn btn-primary">Add Member</a>
+            <a href="{{ url_for('edit_valo_member', id=member.id) }}" style="color: white; background-color: #0d0c1d98; border: transparent;" class="btn">Edit</a>
+            <form action="{{ url_for('delete_valo_member', id=member.id) }}" method="POST" style="display:inline;">
+                <button type="submit" style="color: white; background-color: #0d0c1d98; border: transparent;" class="btn">Delete</button>
+            </form>
+            {% endif %}
+        </div>
+    {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

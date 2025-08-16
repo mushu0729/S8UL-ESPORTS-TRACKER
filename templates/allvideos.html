@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+
+{% block title %}S8UL ESPORTS{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        overflow-y: scroll;
+    }
+
+    #videos-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Align items to the left */
+    gap: 15px;
+    padding: 10px;
+    margin: 0 auto; /* Center container horizontally */
+    max-width: 100%; /* Allow container to stretch across the page */
+    box-sizing: border-box; /* Include padding and border in size calculations */
+    overflow: auto; /* Ensure no content gets cut off */
+}
+
+
+    .video {
+        background: #1c1c1c7a; /* Dark card background */
+        border: 1px solid #333;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        width: 350px;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+        color: white;
+        position: relative;
+    }
+
+    h4 {
+        font-weight: 300;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding-top: 20px;
+        padding-bottom: 50px;
+        color:  rgba(255, 255, 255, 0.534);;
+    }
+
+    .video:hover {
+        transform: translateY(-10px); /* Hover effect */
+        box-shadow: 0 10px 40px rgba(247, 0, 255, 0.507); /* Glow on hover */
+    }
+
+    .video img {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    .video-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    bottom: 10px; /* Adjust to set the distance from the bottom of the card */
+    left: 20px;  /* To provide consistent spacing on the left */
+    right: 20px; /* To provide consistent spacing on the right */
+}
+
+    .channel-info {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        color: rgb(255, 255, 255);
+    }
+
+    .channel-info img {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .channel-info:hover{
+        transform: translateY(-10px); /* Hover effect */
+        box-shadow: 0 10px 40px rgba(247, 0, 255, 0.507); /* Glow on hover */
+    }
+
+    .video-date {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.973);
+        display: flex;
+        align-items: center;
+    }
+
+    .video-date img {
+        width: 22px;
+        height: 22px;
+        margin-right: 5px;
+    }
+    h1{
+      margin-left: 65px;
+      padding: 10px 0;
+      font-size: 32px;
+      color: #ffffff;
+      font-weight: bold;
+    }
+    /* Skeleton loader styles */
+    .skeleton {
+        background: #333;
+        border-radius: 10px;
+        animation: shimmer 1.5s infinite linear;
+        background: linear-gradient(
+            to right,
+            rgba(51, 51, 51, 0.3) 0%,
+            rgba(51, 51, 51, 0.5) 50%,
+            rgba(51, 51, 51, 0.3) 100%
+        );
+        background-size: 1000px 100%;
+    }
+
+    @keyframes shimmer {
+        0% {
+            background-position: -1000px 0;
+        }
+        100% {
+            background-position: 1000px 0;
+        }
+    }
+
+    #videos-container .skeleton-card {
+        width: 350px;
+        height: 250px;
+        margin: 15px;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+    .skeleton-thumbnail {
+        width: 100%;
+        height: 150px;
+        margin-bottom: 15px;
+    }
+
+    .skeleton-title {
+        width: 80%;
+        height: 20px;
+        margin-bottom: 10px;
+    }
+
+    .skeleton-channel {
+        width: 60%;
+        height: 15px;
+    }
+</style>
+<h1>Channel Videos</h1>
+<div id="videos-container">
+    <!-- Example skeleton loaders (generated dynamically by JS below) -->
+</div>
+
+
+<div id="videos-container"></div>
+
+<script type="module">
+    import { channelIds } from '/static/channels.js'; // Ensure correct path to channels.js
+
+    const API_KEY = 'AIzaSyCUkChaRFhGOByAWMimCNO6kWyFK7FImBw'; // Replace with your API key
+    const videosContainer = document.getElementById('videos-container');
+
+    // Fetch videos from the YouTube API for a specific channel
+    async function fetchVideos(channelId) {
+        const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&maxResults=1&order=date&type=video&key=${API_KEY}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch videos for channel ${channelId}`);
+            }
+            const data = await response.json();
+            return data.items;
+        } catch (error) {
+            console.error(`Error fetching videos: ${error}`);
+            return []; // Return an empty array if there's an error
+        }
+    }
+
+    // Fetch channel details including profile picture
+    async function fetchChannelDetails(channelId) {
+        const url = `https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${channelId}&key=${API_KEY}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch channel details for channel ${channelId}`);
+            }
+            const data = await response.json();
+            return data.items[0]?.snippet?.thumbnails?.default?.url || '';
+        } catch (error) {
+            console.error(`Error fetching channel details: ${error}`);
+            return ''; // Return an empty string if there's an error
+        }
+    }
+
+    // Display videos in the container
+    async function displayVideos() {
+    // Generate skeleton loaders
+    for (let i = 0; i < 6; i++) { // Adjust the number of skeleton loaders
+        const skeleton = document.createElement('div');
+        skeleton.className = 'skeleton-card skeleton';
+        skeleton.innerHTML = `
+            <div class="skeleton-thumbnail skeleton"></div>
+            <div class="skeleton-title skeleton"></div>
+            <div class="skeleton-channel skeleton"></div>
+        `;
+        videosContainer.appendChild(skeleton);
+    }
+
+    try {
+        for (const channelId of channelIds) {
+            const channelProfile = await fetchChannelDetails(channelId);
+            const videos = await fetchVideos(channelId);
+            videos.forEach((video) => {
+                const videoElement = document.createElement('div');
+                videoElement.classList.add('video');
+
+                const uploadDate = new Date(video.snippet.publishedAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                });
+
+                videoElement.innerHTML = `
+                    <img src="${video.snippet.thumbnails.medium.url}" alt="Thumbnail of ${video.snippet.title}">
+                    <h4>${video.snippet.title}</h4>
+                    <div class="video-details">
+                        <div class="channel-info">
+                            <img src="${channelProfile}" alt="Channel profile">
+                            <span>${video.snippet.channelTitle}</span>
+                        </div>
+                        <div class="video-date">
+                            <img src="static/calender-removebg-preview.png" alt="Calendar icon">
+                            <span>${uploadDate}</span>
+                        </div>
+                    </div>
+                `;
+
+                videoElement.addEventListener('click', () => {
+                    // Open video link in a new tab
+                    window.open(`https://www.youtube.com/watch?v=${video.id.videoId}`, '_blank');
+                });
+
+                // Replace the skeleton loader with the actual video card
+                videosContainer.firstChild.remove();
+                videosContainer.appendChild(videoElement);
+            });
+        }
+    } catch (error) {
+        console.error('Error loading videos:', error);
+    } finally {
+        // Remove remaining skeleton loaders if any
+        while (videosContainer.firstChild && videosContainer.firstChild.classList.contains('skeleton-card')) {
+            videosContainer.firstChild.remove();
+        }
+    }
+}
+
+    // Load videos when the page is loaded
+    displayVideos();
+</script>
+
+{% endblock %}

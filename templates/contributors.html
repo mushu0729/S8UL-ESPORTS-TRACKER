@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}S8UL ESPORTS{% endblock %}
+
+{% block content %}
+<style>
+    body{
+        overflow-y:scroll;
+    }
+    .container{
+        margin-bottom: 30px;
+        margin-top: 20px;
+        margin-left: 200px;
+    }
+    h1{
+        margin-left: 80px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        margin-right: 0;
+        font-size: 50px; /* Adjust font size */
+        background: linear-gradient(to right, red, yellow, green, rgb(212, 199, 8), rgb(223, 105, 8)); /* Multicolor gradient */
+        -webkit-background-clip: text; /* Clip the background to text */
+        color: transparent; /* Make the text color transparent to show the gradient */
+        font-weight: bold; /* Make the text bold */
+        position: center;
+        padding: 10px;
+        text-transform: uppercase;
+        }
+    h4{
+        text-transform: uppercase;
+        position: center;
+        text-align: center;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.685);
+        padding-top: -5px;
+        padding-bottom: 10px;
+    }
+    .main{
+        background-color: rgba(0, 0, 0, 0.267);
+        margin: 10px;
+        width: 550px;
+        margin-left: 10px;
+        border-radius: 20px;
+        margin-bottom: 10px;
+        
+    }
+    .main:hover{
+        transform: translateY(-10px); /* Hover effect */
+        box-shadow: 0 10px 40px rgba(247, 0, 255, 0.507); /* Glow on hover */ 
+    }
+    h2{
+        padding: 8px;
+        text-transform: uppercase;
+        font-weight: 800;
+        font-size:25px;
+        margin-top: 10px;
+        margin-left: 10px;
+        color: rgba(255, 255, 255, 0.788);
+    }
+    .main p{
+        padding: 10px;
+        color: rgb(189, 28, 127);
+        text-shadow: 20px solid rgb(189, 28, 127);
+        margin-top: -10px;
+        margin-left: 10px;
+    }
+    h5{
+        padding: 10px;
+        color: rgba(255, 255, 255, 0.493);
+        margin-left: 10px;
+        margin-top: -20px;
+        font-weight: 600;
+    }
+    h3{
+        padding: 10px;
+        color: rgba(255, 255, 255, 0.76);
+        font-size: 18px;
+        margin-left: 10px;
+    }
+    h3 img:hover{
+        transform: rotate(5deg) scale(1.1);
+    }
+</style>
+<h1 class="text-center">Contributors</h1>
+<h4>The awesome people behind the S8UL Community Website</h4>
+<div class="container">
+    <div class="row">
+        <div class="main col-md-6">
+            <h2>Mushahid</h2>
+            <p>Lead Devoloper</p>
+            <h5>Created and maintain the S8UL Website</h5>
+            <h3><a href="https://www.instagram.com/"><img style="width: 30px;height: 30px;margin-right: 8px;" src="/static/download-removebg-preview.png"></a>Follow on Instagram</h3>
+        </div>
+        <div class="main col-md-6">
+            <h2>Ankita</h2>
+            <p>Community Support</p>
+            <h5>Provides support and helps maintain the community</h5>
+            <h3><a href="https://www.instagram.com/"><img style="width: 30px;height: 30px;margin-right: 8px;" src="/static/download-removebg-preview.png"></a>Follow on Instagram</h3>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="main col-md-6">
+            <h2>Deepa C m</h2>
+            <p>Content Contributor</p>
+            <h5>Contributes to website content and community</h5>
+            <h3><a href="https://www.instagram.com/"><img style="width: 30px;height: 30px;margin-right: 8px;" src="/static/download-removebg-preview.png"></a>Follow on Instagram</h3>
+        </div>
+        <div class="main col-md-6">
+            <h2>Dr.Levina</h2>
+            <p>Mentor</p>
+            <h5>Provides Guidence to make this Website Successful</h5>
+            <h3><a href="https://www.instagram.com/"><img style="width: 30px;height: 30px;margin-right: 8px;" src="/static/download-removebg-preview.png"></a>Follow on Instagram</h3>
+        </div>
+    </div>
+</div>
+{% endblock %}

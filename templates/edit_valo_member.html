@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}S8UL ESPORTS{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        overflow-y: scroll;
+    }
+    
+    .login {
+        border: 1px solid black;
+        width: 400px;
+        height: 700px;
+        background: rgba(255, 255, 255, 0.158); /* Semi-transparent white */
+        color: white;
+        border-radius: 20px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.75);
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+        margin-bottom: 40px;
+        margin-left: 580px;
+    }
+    
+    .login:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px  rgba(247, 0, 255, 0.507);
+    }
+    
+    form {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        padding: 40px;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: brightness(40%);
+        gap: 5px;
+    }
+    
+    h1 {
+        font-weight: normal;
+        font-size: 24px;
+        text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        padding-left: 10px;
+    }
+    
+    label {
+        color: rgba(225, 255, 255, 0.8);
+        text-transform: uppercase;
+        font-size: 10px;
+        padding-left: 10px;
+    }
+    
+    input {
+        background: rgba(225, 255, 255, 0.3);
+        height: 40px;
+        line-height: 40px;
+        border-radius: 20px;
+        padding: 0px 20px;
+        border: none;
+        margin-bottom: 20px;
+        color: white;
+    }
+    
+    button {
+        background: rgb(45, 126, 231);
+        height: 40px;
+        line-height: 40px;
+        border-radius: 40px;
+        border: none;
+        margin: 10px 0px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+        color: white;
+    }
+    
+    button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px  rgba(247, 0, 255, 0.507);
+    }
+</style>    
+<div class="login">
+    <form action="{{ url_for('edit_valo_member',id=(member.id)) }}" method="POST" enctype="multipart/form-data">
+        <h1>Edit Team Member</h1>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{ member.name }}" required>
+
+        <label for="role">Role:</label>
+        <input type="text" id="role" name="role" value="{{ member.role }}" required>
+
+        <label for="image">Image (Optional):</label>
+        <input type="file" id="image" style="background-color:transparent"; name="image">
+
+        <label for="youtube">YouTube:</label>
+        <input type="url" id="youtube" name="youtube" value="{{ member.youtube }}">
+
+        <label for="instagram">Instagram:</label>
+        <input type="url" id="instagram" name="instagram" value="{{ member.instagram }}">
+
+        <label for="twitter">Twitter:</label>
+        <input type="url" id="twitter" name="twitter" value="{{ member.twitter }}">
+
+        <button type="submit">Update Member</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block title %}S8UL ESPORTS{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        overflow-y: scroll;
+    }
+    .containerss {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+        margin-left: 300px;
+        width:900px;
+    }
+    .suggestion-form {
+        border: 1px solid black;
+        width: 900px;
+        background: rgba(255, 255, 255, 0.158);
+        color: white;
+        border-radius: 20px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.75);
+        background-size: cover;
+        background-position: center;
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+ 
+    .suggestion-form:hover, .suggestion-list:hover {
+        transform: translateY(-10px); /* Hover effect */
+        box-shadow: 0 10px 40px rgba(247, 0, 255, 0.507); /* Glow on hover */
+    }
+    
+    form {
+        display: block;
+        padding: 20px;
+        backdrop-filter: brightness(40%);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    h1 {
+            margin-left: 80px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            margin-right: 0;
+            font-size: 50px; /* Adjust font size */
+            background: linear-gradient(to right, red, yellow, green, rgb(212, 199, 8), rgb(223, 105, 8)); /* Multicolor gradient */
+            -webkit-background-clip: text; /* Clip the background to text */
+            color: transparent; /* Make the text color transparent to show the gradient */
+            font-weight: bold; /* Make the text bold */
+            position: center;
+            padding: 10px;
+            text-transform: uppercase;
+        }
+    label {
+        color: rgb(225, 255, 255);
+        text-transform: uppercase;
+        font-size: 12px;
+    }
+    input, textarea {
+        background: rgba(225, 255, 255, 0.3);
+        border-radius: 20px;
+        padding: 10px;
+        border: none;
+        color: white;
+        margin-bottom: 10px;
+    }
+    textarea {
+        height: 100px;
+    }
+    button {
+        background: rgb(178, 45, 231);
+        height: 40px;
+        border-radius: 40px;
+        border: none;
+        margin: 10px 0;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+        color: white;
+    }
+    button:hover {
+        transform: translateY(-10px); /* Hover effect */
+        box-shadow: 0 10px 40px rgba(247, 0, 255, 0.507); /* Glow on hover */
+    }
+    .list-group-item {
+        background: rgba(0, 0, 0, 0.3);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+    .timestamp {
+    font-size: 0.8em; /* Small font size */
+    color: #999;     /* Subtle color */
+    margin: 0;
+    text-align: right;
+    }
+    ::placeholder{
+        color: rgba(255, 255, 255, 0.808);
+        text-transform: uppercase;
+        padding: 10px;
+        font-size: small;
+    }
+    /* Parent container */
+.suggestionsans {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+/* Suggestion items container */
+.suggestion-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Individual suggestion card */
+.suggestion-card {
+    border: 1px solid #444;
+    border-radius: 20px;
+    border: 1px solid black;
+    padding: 15px;
+    background: #101014a8;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    width: 700px;
+}
+.suggestion-card:hover{
+    transform: translateY(-10px); /* Hover effect */
+    box-shadow: 0 10px 40px rgba(247, 0, 255, 0.507); /* Glow on hover */   
+}
+
+/* Suggestion header */
+.suggestion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+/* Timestamp (aligned to the right) */
+.timestamp {
+    font-size: 0.8em;
+    color: #aaa;
+    position: absolute;
+    right: 20px; /* Fine-tune spacing as per your layout */
+    bottom: 15px;
+}
+
+/* Twitter username */
+.twitter-username {
+    font-size: 0.9em;
+    color: #ffcc00;
+}
+
+/* Suggestion text */
+.suggestion-text {
+    font-size: 1em;
+    line-height: 1.5;
+}
+h4{
+    text-transform: uppercase;
+    position: center;
+    text-align: center;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.685);
+    padding-top: -5px;
+    padding-bottom: 10px;
+}
+
+</style>
+<h1 class="text-center">Suggestions</h1>
+<h4>Help us improve the S8UL Community Website</h4>
+<div class="containerss">
+    <!-- Suggestion Form -->
+    <div class="suggestion-form">
+        <form action="{{ url_for('add_suggestion') }}" method="POST">
+            <label for="user_name">Your Name</label>
+            <input type="text" name="user_name" id="user_name" placeholder="Enter your name" required>
+            <label for="twitter_username">Twitter Username</label>
+            <input type="text" name="twitter_username" id="twitter_username" placeholder="Enter your Twitter username">
+            <label for="suggestion">Your Suggestion</label>
+            <textarea name="suggestion" id="suggestion" placeholder="Enter your suggestion" required></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+  <!-- Suggestions List -->
+  <div class="suggestionsans">
+    {% if suggestion %}
+        <div class="suggestion-items">
+            {% for suggestion in suggestion %}
+                <div class="suggestion-card">
+                    <div class="suggestion-header">
+                        <strong style="text-transform: uppercase; margin-left: 30px;">{{ suggestion.name }}</strong>
+                        {% if suggestion.twitter_username %}
+                            <span class="twitter-username">({{ suggestion.twitter_username }})</span>
+                        {% endif %}
+                    </div>
+                    <p class="timestamp" style="margin-left: 400px;">{{ suggestion.timestamp.strftime('%b %d, %I:%M %p') }}</p>
+                    <p class="suggestion-text" style="margin-left: 30px;">{{ suggestion.suggestion }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">No suggestions yet. Be the first to suggest something!</p>
+    {% endif %}
+</div>
+</div>
+
+
+{% endblock %}

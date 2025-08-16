@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}S8UL ESPORTS{% endblock %}
+
+{% block content %}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #121212; /* Dark background for modern look */
+      color: white;
+      overflow-y: scroll;
+    }
+
+    .profile-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: left;
+      gap: 15px;
+      padding: 5px;
+      margin-left: 110px;
+    }
+
+    .profile {
+      background: #1c1c1c7a; /* Dark card background */
+      border: 1px solid #333;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      width: 300px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .profile:hover {
+      transform: translateY(-10px); /* Hover effect */
+      box-shadow: 0 10px 40px  rgba(247, 0, 255, 0.507); /* Glow on hover */
+    }
+
+    .profile img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+    }
+
+    .profile h3 {
+      margin: 10px 0;
+      font-size: 20px;
+    }
+
+    .profile p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.534);
+    }
+
+    h1 {
+      margin-left: 60px;
+      padding: 5px 0;
+      font-size: 32px;
+      color: #ffffff;
+      font-weight: bold;
+    }
+  </style>
+
+  <h1>Creators</h1>
+  <div id="profiles" class="profile-container"></div>
+
+  <script type="module">
+    import { channelIds } from '/static/channels.js'; // Ensure the path is correct and accessible
+
+    const API_KEY = 'AIzaSyCUkChaRFhGOByAWMimCNO6kWyFK7FImBw'; // Replace with your API key
+    const profilesContainer = document.getElementById('profiles');
+
+    // Fetch channel data from YouTube API
+    async function fetchChannelData(channelId) {
+      const url = `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${channelId}&key=${API_KEY}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Failed to fetch channel data');
+        }
+        const data = await response.json();
+        return data.items[0];
+      } catch (error) {
+        console.error(`Error fetching data for channel ${channelId}:`, error);
+        return null;
+      }
+    }
+
+    // Display the creator profiles
+    async function displayProfiles() {
+      for (const channelId of channelIds) {
+        const channelData = await fetchChannelData(channelId);
+        if (channelData) {
+          const profile = document.createElement('div');
+          profile.className = 'profile';
+          profile.innerHTML = `
+            <img src="${channelData.snippet.thumbnails.high.url}" alt="${channelData.snippet.title}">
+            <h3>${channelData.snippet.title}</h3>
+            <p>Subscribers: ${parseInt(channelData.statistics.subscriberCount).toLocaleString()}</p>
+            <p>Videos: ${parseInt(channelData.statistics.videoCount).toLocaleString()}</p>
+            <p>Views: ${parseInt(channelData.statistics.viewCount).toLocaleString()}</p>
+          `;
+          profile.addEventListener('click', () => {
+            window.location.href = `/video.html?channelId=${channelId}`;
+          });
+          profilesContainer.appendChild(profile);
+        }
+      }
+    }
+
+    // Initialize the profiles display
+    displayProfiles();
+  </script>
+{% endblock %}

@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}S8UL ESPORTS{% endblock %}
+
+{% block content %}
+<style>
+    body{
+        overflow-y: scroll;
+    }
+    .team-card {
+        background-color: #2a2a2a69;
+        color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        max-width: 600px;
+        margin: 20px auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .team-card:hover{
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(247, 0, 255, 0.507);
+      }
+      
+      .team-header {
+        position: relative;
+      }
+      
+      .team-image {
+        width: 100%;
+        height: 250px;
+        object-fit:fill;
+        border-radius: 10px;
+        margin-top: 10px;
+      }
+      
+      .team-details {
+        padding: 20px;
+      }
+      
+      .team-details h2 {
+        font-size: 24px;
+        margin-bottom: 12px;
+      }
+      
+      .team-description {
+        font-size: 18px;
+        margin-bottom: 20px;
+        margin-left: 10px;
+        text-transform: uppercase;
+      }
+      
+      .achievements {
+        list-style: none;
+        padding: 0;
+      }
+      
+      .achievements li {
+        margin-bottom: 10px;
+        font-size: 14px;
+      }
+      
+      .team-members {
+        margin-top: 15px;
+        font-size: 14px;
+      }
+      
+      .social-icons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      
+      .social-icons .icon img {
+        width: 20px;
+        height: 20px;
+      }
+      .best h2{
+    margin-left: 550px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-right: 0;
+    font-size: 50px; /* Adjust font size */
+    background: linear-gradient(to right, red, yellow, green, rgb(212, 199, 8), rgb(223, 105, 8)); /* Multicolor gradient */
+    -webkit-background-clip: text; /* Clip the background to text */
+    color: transparent; /* Make the text color transparent to show the gradient */
+    font-weight: bold; /* Make the text bold */
+    position: center;
+    padding: 10px;
+    text-transform: uppercase;
+}
+h4{
+    text-transform: uppercase;
+    position: center;
+    text-align: center;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.685);
+    padding-top: -5px;
+    padding-bottom: 10px;
+}
+button{
+    min-width: 450px;
+    background-color:  rgba(28, 28, 28, 0.336);
+    text-align: left;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: none;
+    color: white;
+    text-transform: uppercase;
+}
+button:hover{
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+button.btn{
+    background-color: rgba(255, 255, 255, 0.11);
+    min-width: 20px;
+    min-height: 20px;
+    margin-top: -15px;
+    align-items: center;
+    padding: 0%;
+    margin-left: 5px;
+}
+</style>
+<div class="best">
+    <h2>Home Of The Best</h2>
+</div>
+<h4>Meet the champions who represent S8UL across different games</h4>
+<div class="container">
+    <div class="row">
+        <div class="team-card col-md-6" onclick="location.href='{{url_for('bgmi')}}'">
+            <div class="team-header">
+                <img src="/static/img3.jpg" alt="BGMI Team" class="team-image">
+            </div>
+            <div class="team-details">
+                <h2>BGMI</h2>
+                <p class="team-description">India's most domin ant BGMI roster</p>
+                <ul class="achievements">
+                    <button><li> <img style="width: 30px;height: 30px;" src="/static/trophy.png"> BGMS 2024 Champions</li></button>
+                    <button><li><img style="width: 30px;height: 30px;" src="/static/trophy.png">BMPS Season 1 Champions</li></button>
+                    <button><li><img style="width: 30px;height: 30px;" src="/static/trophy.png">Multiple tournament victories</li></button>
+                </ul>
+                <hr>
+                    <div class="container">
+                        <div class="row">
+                            <div class="team-members col-md-6">
+                                <p><img style="width: 40px;height: 40px;" src="/static/roster.png"> 8 Members</p>
+                            </div>
+                            <div class="social-icons col-md-6">
+                                <button class="btn"><a href="#" class="icon"><img  style="width: 40px;height: 40px;" src="/static/bgis.png" alt="Instagram"></a></button>
+                                <button class="btn"><a href="#" class="icon"><img style="width: 40px;height: 40px;"  src="/static/bgis.png" alt="Twitter"></a></button>
+                                <button class="btn"><a href="#" class="icon"><img style="width: 40px;height: 40px;"  src="/static/bgis.png" alt="YouTube"></a></button>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="team-card col-md-6" onclick="location.href='{{url_for('valo')}}'">
+        
+            <div class="team-header">
+                <img src="/static/valo.jpg" alt="BGMI Team" class="team-image">
+            </div>
+            <div class="team-details">
+                <h2>VALORANT</h2>
+                <p class="team-description">India's most aggressive VALORANT roster</p>
+                <ul class="achievements">
+                    <button><li><img  style="width: 30px;height: 30px;" src="/static/trophy.png">VALORANT CHAMPIONSHIP RUNNERUP.</li></button>
+                    <button><li><img style="width: 30px;height: 30px;"  src="/static/trophy.png">VALORANT CHAMPIONSHIP WINNER 2023.</li></button>
+                    <button><li><img style="width: 30px;height: 30px;"  src="/static/trophy.png">VALORANT LEAGUE CHAMPIONS 2024.</li></button>
+                </ul>
+                <hr>
+                    <div class="container">
+                        <div class="row">
+                            <div class="team-members col-md-6">
+                                <p><img style="width: 40px;height: 40px;" src="/static/roster.png"> 8 Members</p>
+                            </div>
+                            <div class="social-icons col-md-6">
+                                <button class="btn"><a href="#" class="icon"><img  style="width: 40px;height: 40px;" src="/static/bgis.png" alt="Instagram"></a></button>
+                                <button class="btn"><a href="#" class="icon"><img style="width: 40px;height: 40px;"  src="/static/bgis.png" alt="Twitter"></a></button>
+                                <button class="btn"><a href="#" class="icon"><img style="width: 40px;height: 40px;"  src="/static/bgis.png" alt="YouTube"></a></button>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+  
+{% endblock %}

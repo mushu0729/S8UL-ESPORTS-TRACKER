@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}S8UL ESPORTS{% endblock %}
+
+{% block content %}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #121212; /* Dark background for modern look */
+      color: white;
+      overflow-y: scroll;
+    }
+
+    #channel-details {
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #1c1c1c7a;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      gap: 20px; /* Space between image and details */
+      width: 1250px;
+      margin-left: 60px;
+    }
+    #channer-details:hover{
+      transform: translateY(-10px); /* Hover effect */
+      box-shadow: 0 10px 40px rgba(247, 0, 255, 0.507); /* Glow on hover */
+    }
+
+    #channel-details img {
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+    }
+    #channel-details img:hover{
+      transform: translateY(-10px); /* Hover effect */
+      box-shadow: 0 10px 40px  rgba(247, 0, 255, 0.507); /* Glow on hover */
+    }
+
+    #channel-details .details {
+      flex-grow: 1;
+    }
+
+    #videos-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: left;
+      gap: 15px;
+      padding: 5px;
+      margin-left: 140px;
+    }
+
+    .video {
+      background: #1c1c1c7a; /* Dark card background */
+      border: 1px solid #333;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      width: 350px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .video:hover {
+      transform: translateY(-10px); /* Hover effect */
+      box-shadow: 0 10px 40px  rgba(247, 0, 255, 0.507); /* Glow on hover */
+    }
+
+    .video img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .video h4 {
+      margin-top: 10px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    h1{
+      margin-left: 65px;
+      padding: 5px 0;
+      font-size: 32px;
+      color: #ffffff;
+      font-weight: bold;
+    }
+    h2{
+      font-weight: bold;
+    }
+  /* Skeleton loader styles */
+  .skeleton {
+        background: #333;
+        border-radius: 10px;
+        animation: shimmer 1.5s infinite linear;
+        background: linear-gradient(
+            to right,
+            rgba(51, 51, 51, 0.3) 0%,
+            rgba(51, 51, 51, 0.5) 50%,
+            rgba(51, 51, 51, 0.3) 100%
+        );
+        background-size: 1000px 100%;
+    }
+
+    @keyframes shimmer {
+        0% {
+            background-position: -1000px 0;
+        }
+        100% {
+            background-position: 1000px 0;
+        }
+    }
+    #channel-details:hover {
+   transform: translateY(-10px); /* Hover effect */
+   box-shadow: 0 10px 40px  rgba(247, 0, 255, 0.507); /* Glow on hover */
+    }
+  </style>
+
+
+  <h1>Channel Videos</h1>
+  <div id="channel-details">
+    <img src="" alt="Profile Image" id="channel-image">
+    <div class="details">
+      <h2 id="channel-title"></h2>
+      <p id="subscribers-count"></p>
+      <p><strong></strong> <span id="channel-description"></span></p>
+    </div>
+  </div>
+  <div id="videos-container"></div>
+
+  <script>
+    const API_KEY = 'AIzaSyD9wKem2ByvdACQ6_BMvc61yElbC82pAbU'; // Replace with your API key
+    const urlParams = new URLSearchParams(window.location.search);
+    const channelId = urlParams.get('channelId');
+
+    const channelDetails = document.getElementById('channel-details');
+    const channelImage = document.getElementById('channel-image');
+    const channelTitle = document.getElementById('channel-title');
+    const subscribersCount = document.getElementById('subscribers-count');
+    const channelDescription = document.getElementById('channel-description');
+    const videosContainer = document.getElementById('videos-container');
+    
+
+    async function fetchChannelData(channelId) {
+      const url = `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&id=${channelId}&key=${API_KEY}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      return data.items[0];
+    }
+
+    async function fetchChannelVideos(channelId) {
+      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${channelId}&maxResults=10&order=date&key=${API_KEY}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      return data.items;
+    }
+
+    async function displayChannelVideos() {
+      const channelData = await fetchChannelData(channelId);
+      const videos = await fetchChannelVideos(channelId);
+
+      // Display channel details (with profile picture and about)
+      channelImage.src = channelData.snippet.thumbnails.high.url;
+      channelTitle.innerText = channelData.snippet.title;
+      subscribersCount.innerHTML = `Subscribers: ${parseInt(channelData.statistics.subscriberCount).toLocaleString()}M`;
+      channelDescription.innerText = channelData.snippet.description;
+
+      // Display videos
+      videos.forEach(video => {
+        const videoElement = document.createElement('div');
+        videoElement.classList.add('video');
+        videoElement.innerHTML = `
+          <img src="${video.snippet.thumbnails.medium.url}" alt="${video.snippet.title}">
+          <h4>${video.snippet.title}</h4>
+        `;
+        // Add click event to open video on YouTube
+        videoElement.addEventListener('click', () => {
+          window.open(`https://www.youtube.com/watch?v=${video.id.videoId}`, '_blank');
+        });
+
+        videosContainer.appendChild(videoElement);
+      });
+    }
+
+    displayChannelVideos();
+  </script>
+{% endblock %}

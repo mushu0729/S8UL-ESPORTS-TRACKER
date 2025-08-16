@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}S8UL ESPORTS{% endblock %}
+
+{% block content %}
+    <title>{{ team_name }} - Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body{
+            overflow-y: scroll;
+        }
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+            background-color: #343a4044;
+            color: white;
+        }
+        .table th {
+            background-color: #343a4036;
+            color: white;
+        }
+        .table tbody tr:hover {
+            background-color:#343a4069;
+        }
+        .containerttt {
+            margin-top: 50px;
+            background-image: url(/static/valobg.avif);
+            background-position: center;
+            background-color: #343a405e;
+            width: 1100px;
+            margin-left:220px ;
+        }
+        .containerttt:hover{
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(247, 0, 255, 0.507);
+        }
+        .search-input {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+       
+        .table-responsive {
+            max-height: 400px;
+            overflow-y: scroll;
+            margin-bottom:40px ;
+        }
+        h1{
+            margin-left: 20px;
+            font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            margin-right: 0;
+            font-size: 50px; /* Adjust font size */
+            background: linear-gradient(to right, red, yellow, green, rgb(212, 199, 8), rgb(223, 105, 8)); /* Multicolor gradient */
+            -webkit-background-clip: text; /* Clip the background to text */
+            color: transparent; /* Make the text color transparent to show the gradient */
+            font-weight: bold; /* Make the text bold */
+            position: center;
+            padding: 10px;
+            text-transform: uppercase;
+        }
+        .form-control::placeholder{
+            color: white;
+        }
+    </style>
+     <h1 class="text-center">{{ team_name }} - Results</h1>
+        
+     <!-- Search Bar -->
+     <input class="form-control search-input" style="width: 1100px;margin-left: 220px; background-color: #343a4028;color: white;"  type="text" id="searchInput" placeholder="Search results..." onkeyup="filterTable()">
+    
+    <div class="containerttt">
+        
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped mt-3">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Placement</th>
+                        <th>Tier</th>
+                        <th>Tournament</th>
+                        <th>Prize</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsTable">
+                    {% for result in results %}
+                    <tr>
+                        <td>{{ result.date }}</td>
+                        <td>{{ result.placement }}</td>
+                        <td>{{ result.tier }}</td>
+                        <td style="text-align: left;" >{{ result.tournament }}</td>
+                        <td>{{ result.prize }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">No results found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Search Functionality
+        function filterTable() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.getElementById('resultsTable').getElementsByTagName('tr');
+            
+            for (let row of rows) {
+                const cells = row.getElementsByTagName('td');
+                let matchFound = false;
+                
+                for (let cell of cells) {
+                    if (cell.innerHTML.toLowerCase().indexOf(searchInput) > -1) {
+                        matchFound = true;
+                        break;
+                    }
+                }
+                
+                if (matchFound) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            }
+        }
+    </script>
+
+    <!-- Bootstrap & FontAwesome JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

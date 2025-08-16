@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}S8UL ESPORTS{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        overflow-y: scroll;
+    }
+    .login {
+        border: 1px solid black;
+        width: 400px;
+        height: 400px;
+        background: rgba(255, 255, 255, 0.158); /*url clr*/
+        background-image: url(/static/S8ul.png);
+        color: white;
+        border-radius: 20px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.75);
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+        margin-bottom: 40px;
+        margin-left: 580px;
+    }
+    .login:hover{
+        transform: translateY(-10px); /* Hover effect */
+        box-shadow: 0 10px 40px  rgba(247, 0, 255, 0.507); /* Glow on hover */
+    }
+    form {
+        display: block;
+        box-sizing: border-box;
+        padding: 40px;
+        width: 100%;
+        height: 100%;
+        backdrop-filter: brightness(40%);
+        flex-direction: column;
+        display: flex;
+        gap: 5px;
+    }
+    h1 {
+        font-weight: normal;
+        font-size: 24px;
+        text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        padding-left: 10px;
+    }
+    label {
+        color: rgba(225, 255, 255, 0.8);
+        text-transform: uppercase;
+        font-size: 10px;
+        padding-left: 10px;
+    }
+    input {
+        background: rgba(225, 255, 255, 0.3);
+        height: 40px;
+        line-height: 40px;
+        border-radius: 20px;
+        padding: 0px 20px;
+        border: none;
+        margin-bottom: 20px;
+        color: white;
+    }
+    button {
+        background: rgb(45, 126, 231);
+        height: 40px;
+        line-height: 40px;
+        border-radius: 40px;
+        border: none;
+        margin: 10px 0px;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+        color: white;
+    }
+    button:hover{
+        transform: translateY(-10px); /* Hover effect */
+        box-shadow: 0 10px 40px  rgba(247, 0, 255, 0.507); /* Glow on hover */
+    }
+</style>
+
+<div class="login">
+    <form action="/grant-access" method="POST">
+        <h1>Grant Access</h1>
+        <label for="username">New User Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="password">New User Password:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Grant Access</button>
+    </form>
+</div>
+
+{% endblock %}
